@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"math/rand"
 	"sort"
 	"strconv"
@@ -298,7 +299,7 @@ func ValidateLogsFrequency(env *environment.MetaData) status.TestResult {
 	return testResult
 }
 
-func ValidateLNeuronCoreUtilizationValuesLogs(env *environment.MetaData) status.TestResult {
+func ValidateNeuronCoreUtilizationValuesLogs(env *environment.MetaData) status.TestResult {
 
 	testResult := status.TestResult{
 		Name:   "emf-logs-neuron-core-utilization",
@@ -330,7 +331,7 @@ func ValidateLNeuronCoreUtilizationValuesLogs(env *environment.MetaData) status.
 			if strings.HasPrefix(coreKey, "core") {
 				coreNumStr := strings.TrimPrefix(coreKey, "core")
 				expectedValue, err := strconv.Atoi(coreNumStr)
-				if err != nil || float64(actualValue) != float64(expectedValue) {
+				if err != nil || math.Round(actualValue) != float64(expectedValue) {
 					log.Printf("Core utilization validation failed: expected %s:%d, got %v", 
 						coreKey, expectedValue, actualValue)
 					return testResult
